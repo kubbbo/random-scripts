@@ -7,7 +7,7 @@ function dcdate()
 
 	while getopts "hfte" ARG; do
 		case "$ARG" in
-			h) echo -en "Usage:\ndcdate [-hcfte] dd mm yy hh:mm\n"
+			h) echo -en "Usage:\ndcdate [-hfte] dd mm yy hh:mm\n"
 			   echo "    -h - show help"
 			   echo "    -f - set F flag (implicit is R)"
 			   echo "    -t - set T flag"
