@@ -3,19 +3,16 @@
 function dcdate()
 {
 	local OPTIND ARG
-	local COPY=0
 	local MODE="R"
 
-	while getopts "hcfte" ARG; do
+	while getopts "hfte" ARG; do
 		case "$ARG" in
 			h) echo -en "Usage:\ndcdate [-hcfte] dd mm yy hh:mm\n"
 			   echo "    -h - show help"
-			   echo "    -c - copy output"
 			   echo "    -f - set F flag (implicit is R)"
 			   echo "    -t - set T flag"
 			   echo "    -e - output epoch time only"
 			   return 1;;
-			c) COPY=1;;
 			f) MODE="F";;
 			t) MODE="T";;
 			e) MODE="E";;
@@ -42,10 +39,7 @@ function dcdate()
 	then OUT="$EPOCH";
 	fi
 
-	if [ $COPY -gt 0 ]
-	then echo "$OUT" | xclip -selection clipboard && return 0;
-	else echo "$OUT" && return 0;
-	fi
+	echo "$OUT" && return 0;
 
 	# options:
 	# f/F - short/long date time (f is implicit)
