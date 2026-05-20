@@ -4,21 +4,21 @@ function dcdate()
 {
 	local OPTIND ARG
 	local COPY=0
-	local FLAG="R"
+	local MODE="R"
 
-	while getopts "hcftn" ARG; do
+	while getopts "hcfte" ARG; do
 		case "$ARG" in
-			h) echo -en "Usage:\ndcdate [-hcft] dd mm yy hh:mm\n"
+			h) echo -en "Usage:\ndcdate [-hcfte] dd mm yy hh:mm\n"
 			   echo "    -h - show help"
 			   echo "    -c - copy output"
-			   echo "    -f - set F flag instead of R"
+			   echo "    -f - set F flag (implicit is R)"
 			   echo "    -t - set T flag"
-			   echo "    -n - output epoch time only"
+			   echo "    -e - output epoch time only"
 			   return 1;;
 			c) COPY=1;;
-			f) FLAG="F";;
-			t) FLAG="T";;
-			n) FLAG="N";;
+			f) MODE="F";;
+			t) MODE="T";;
+			e) MODE="E";;
 			*) echo "Invalid option.">&2 && return 1;;
 		esac
 	done
@@ -36,10 +36,15 @@ function dcdate()
 
 	local DATE="${YEAR}-${MONTH}-${DAY}"
 	local EPOCH=`date --date="${DATE} ${TIME}" +"%s"`
-	local OUT="<t:${EPOCH}:${FLAG}>"
+	local OUT="<t:${EPOCH}:${MODE}>"
 
-	if [ "$FLAG" = "N" ]
+	if [ "$MODE" = "E" ]
 	then OUT="$EPOCH";
+	fi
+
+	if [ $COPY -gt 0 ]
+	then echo "$OUT" | xclip -selection clipboard && return 0;
+	else echo "$OUT" && return 0;
 	fi
 
 	# options:
@@ -48,8 +53,4 @@ function dcdate()
 	# t/T - short/long time
 	# R   - relative time
 	
-	if [ $COPY -gt 0 ]
-	then echo "$OUT" | xclip -selection clipboard && return 0;
-	else echo "$OUT" && return 0;
-	fi
 }
