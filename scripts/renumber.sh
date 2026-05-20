@@ -1,6 +1,10 @@
 #!/bin/env/bash
 
 function renumber()
+# Renames files; adds "layer of numbering"
+# img_1.jpg -> img_01.jpg
+# car_03.png -> car_003.png
+# Expects to find suitably names files.
 {
 	local OPTIND ARG
 
@@ -20,9 +24,6 @@ function renumber()
 
 	local WHERE="$1"
 
-	# img_1.jpg -> img_01.jpg
-	# car_03.png -> car_003.png
-	# etc
 	for FILE in "$WHERE"/*;
 	do
 		EXT="${FILE##*.}";
