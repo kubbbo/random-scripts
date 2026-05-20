@@ -1,0 +1,55 @@
+#!/bin/env/bash
+
+function dcdate()
+{
+	local OPTIND ARG
+	local COPY=0
+	local FLAG="R"
+
+	while getopts "hcftn" ARG; do
+		case "$ARG" in
+			h) echo -en "Usage:\ndcdate [-hcft] dd mm yy hh:mm\n"
+			   echo "    -h - show help"
+			   echo "    -c - copy output"
+			   echo "    -f - set F flag instead of R"
+			   echo "    -t - set T flag"
+			   echo "    -n - output epoch time only"
+			   return 1;;
+			c) COPY=1;;
+			f) FLAG="F";;
+			t) FLAG="T";;
+			n) FLAG="N";;
+			*) echo "Invalid option.">&2 && return 1;;
+		esac
+	done
+
+	shift $((OPTIND - 1))
+
+	if [ $# -ne 4 ]
+	then echo -en "Incorrect number of parameters, $# of 4.\nUse with -h for help.\n">&2 && return 1
+	fi
+
+	local DAY="$1"
+	local MONTH="$2"
+	local YEAR="$3"
+	local TIME="$4"
+
+	local DATE="${YEAR}-${MONTH}-${DAY}"
+	local EPOCH=`date --date="${DATE} ${TIME}" +"%s"`
+	local OUT="<t:${EPOCH}:${FLAG}>"
+
+	if [ "$FLAG" = "N" ]
+	then OUT="$EPOCH";
+	fi
+
+	# options:
+	# f/F - short/long date time (f is implicit)
+	# d/D - short/long date
+	# t/T - short/long time
+	# R   - relative time
+	
+	if [ $COPY -gt 0 ]
+	then echo "$OUT" | xclip -selection clipboard && return 0;
+	else echo "$OUT" && return 0;
+	fi
+}
