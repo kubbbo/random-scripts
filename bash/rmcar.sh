@@ -15,13 +15,14 @@ function rmcar()
 
 	shift $((OPTIND - 1))
 
-	if [ $# -ne 4 ]
+	if [ $# -ne 3 ]
 	then echo -en "Incorrect number of parameters, $# of 3.\nUse with -h for help.\n">&2 && return 1
 	fi
 	
-	local FILE=$1
-	local START=$2
-	local END=$3
+	local FILE="$1"
+	local START="$2"
+	local END="$3"
 
-	sed -i "$FILE" "s/^${START}.*${END}$/d" && return 0
+	grep -E "^${START}.*${END}$" "$FILE";
+	sed -i "/^${START}.*${END}$/d" "$FILE" && return 0
 }
