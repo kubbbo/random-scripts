@@ -7,6 +7,7 @@ function toframes()
 	while getopts "h" ARG; do
 		case "$ARG" in
 			h) echo -en "Usage:\ntoframes [-h] <source video> <directory> <image prefix>\n"
+			   echo "    -h - show help"
 			   return 1;;
 			*) echo "Invalid option, use with -h.">&2 && return 1;;
 		esac
@@ -20,12 +21,12 @@ function toframes()
 
 	local SRC=$1
 	local DEST=$2
-	local NAME=$3
+	local PREFIX=$3
 
 	if ! [ -d "$DEST" ]
 	then mkdir "$DEST"
 	fi
-	ffmpeg -i "$SRC" "$DEST/${NAME}_%04d.png" || exit 1
+	ffmpeg -i "$SRC" "$DEST/${PREFIX}_%04d.png" || exit 1
 
 	exit 0
 }
