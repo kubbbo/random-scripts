@@ -3,14 +3,14 @@ import sys
 from pathlib import Path
 
 
-def set_repeats() -> bool:
-	yn = str(input("Repeats? (y/n,	default n)"))
+def set_repeat() -> bool:
+	yn = str(input("Repeat items? (y/n, default no)"))
 	if (len(yn) <= 0 or yn == "n"):
 		return False
 	elif (yn == "y"):
 		return True
 	print("Wrong option, try again.")
-	return set_repeats()
+	return set_repeat()
 
 
 def main():
@@ -24,35 +24,36 @@ def main():
 	if not Path(filepath).exists():
 		print("Error: file does not exist.")
 		return
-	repeats = set_repeats()
+	repeat = set_repeat()
 	used_idxs = set()
-	options = []
+	items = []
 
 	with open(filepath,"r") as f:
-		options = f.readlines()
+		items = f.readlines()
 	inp=" "
 	counter=1
 	print("#####################################\n")
 	while inp != "q":
-		if not repeats and counter >= len (options):
-
+		if not repeat and counter >= len (items):
 			break
-		r_idx = r.randrange(0, len(options))
+		r_idx = r.randrange(0, len(items))
 		if r_idx in used_idxs:
+			continue
+		if len(items[r_idx]) <= 1:
 			continue
 
 		# print("#####################################\n")
-		print(f'{counter} | {options[r_idx]}')
+		print(f'{counter} | {items[r_idx]}')
 		print("#####################################")
 
-		if not repeats:
+		if not repeat:
 			used_idxs.add(r_idx)
 		counter += 1
 		inp = str(input(""))
 		while inp != "" and inp != "q":
 			inp = str(input(""))
 
-	# print(options)
+	# print(items)
 
 
 # def generate_setup() -> None:
