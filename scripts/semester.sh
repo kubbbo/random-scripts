@@ -20,7 +20,7 @@ function sem()
 	then echo -en "Incorrect number of parameters, $# of 0 or 1.\nUse with -h for help.\n">&2 && return 1
 	fi
 	
-	local SEMDIR="/home/kubo/__Ulohy"
+	local SEMDIR="/mnt/SATA_Linux/hOmE/__Ulohy/"
 
 	if [ $# -ge 1 ];
 	then	if [ -d "$SEMDIR""/semester0""$1" ];
