@@ -28,5 +28,5 @@ function toframes()
 	fi
 	ffmpeg -i "$SRC" "$DEST/${PREFIX}_%04d.png" || exit 1
 
-	exit 0
+	return 0
 }
